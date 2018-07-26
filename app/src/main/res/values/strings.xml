@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">ExpenseTracker</string>
+    <string name="dadString">Dad: $0.00</string>
+    <string name="foodString">Food: $0.00</string>
+    <string name="gasString">Gas: $0.00</string>
+    <string name="miscString">Misc: $0.00</string>
+    <string name="amtTextHint">0.00</string>
+    <string name="addExpenseText">Add Expense: </string>
+    <string name="expenseTotalText">Expense Total: </string>
+    <string name="expenseHistoryText">Expense History</string>
+    <string-array name="expense_type_array">
+        <item>Dad</item>
+        <item>Prev Month</item>
+        <item>Food</item>
+        <item>Gas</item>
+        <item>Misc</item>
+    </string-array>
+
+</resources>
