@@ -34,7 +34,6 @@ public class Expense {
         String eType = "";
         String eTime;
         while (true) {
-            System.out.println(r);
             if (s.charAt(r) == ',' && amt == 0.001) {
                 amt = Double.valueOf(df.format(Double.parseDouble(s.substring(l,r))));
                 r += 2;
