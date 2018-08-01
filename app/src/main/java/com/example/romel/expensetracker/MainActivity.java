@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private int expenseHistorySize;
 
     private Button resetExpensesButton;
-    private int daysSinceLastReset = 0;
+    //private int daysSinceLastReset = 0;
 
     private int password = 1995216;
 
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Reset Expenses")
                         .setMessage("Are you sure you want to reset your expenses?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -148,28 +150,26 @@ public class MainActivity extends AppCompatActivity {
                                                 AlertDialog.Builder builder3 = new AlertDialog.Builder(MainActivity.this);
                                                 final EditText input = new EditText(MainActivity.this);
                                                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
+
                                                 builder3.setView(input)
                                                         .setTitle("Reset Expenses")
                                                         .setMessage("Please enter the password: ")
                                                         .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                                                             @Override
                                                             public void onClick(DialogInterface dialog, int which) {
-                                                                //if (Integer.getInteger(input.getText().toString()) == password) {
-                                                                    resetExpenses();
-                                                                //}
-                                                                /*else {
+                                                                if (Integer.parseInt(input.getText().toString()) == password) {
+                                                                  resetExpenses();
+                                                                }
+
+                                                                else {
                                                                     Toast.makeText(getApplicationContext(),
                                                                             "Incorrect Password" ,
                                                                             Toast.LENGTH_SHORT).show();
-                                                                }*/
+                                                                }
                                                             }
                                                         })
-                                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                            }
-                                                        })
+                                                        .setNegativeButton("Cancel", null)
+                                                        .create()
                                                         .show();
                                             }
                                         })
@@ -196,12 +196,7 @@ public class MainActivity extends AppCompatActivity {
                                 }*/
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //do nothing
-                            }
-                        })
+                        .setNegativeButton("No", null)
                         .show();
 
 
@@ -228,6 +223,18 @@ public class MainActivity extends AppCompatActivity {
         foodTextView.setText("Food: $ 0.00");
         gasTextView.setText("Gas: $ 0.00");
         miscTextView.setText("Misc: $ 0.00");
+        dadAmt = 0;
+        prevMonthAmt = 0;
+        foodAmt = 0;
+        gasAmt = 0;
+        miscAmt = 0;
+        totalAmt = 0;
+        myDatabaseRef.child("Dad").setValue(0);
+        myDatabaseRef.child("Prev Month").setValue(0);
+        myDatabaseRef.child("Food").setValue(0);
+        myDatabaseRef.child("Gas").setValue(0);
+        myDatabaseRef.child("Misc").setValue(0);
+        myDatabaseRef.child("Total").setValue(0);
     }
 
     private void initializeExpenses() {
