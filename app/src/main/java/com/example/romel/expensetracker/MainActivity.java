@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -75,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
     private Button resetExpensesButton;
     private int daysSinceLastReset = 0;
 
+    private int password = 1995216;
+
     //ExpenseHistoryList eHL = new ExpenseHistoryList();
 
     @Override
@@ -136,12 +139,38 @@ public class MainActivity extends AppCompatActivity {
                                 //do the reset
                                 dialog.dismiss();
                                 AlertDialog.Builder builder2 = new AlertDialog.Builder(MainActivity.this);
-                                builder2.setTitle("ResetExpenses")
+                                builder2.setTitle("Reset Expenses")
                                         .setMessage("Is it a new month?")
                                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                resetExpenses();
+                                                dialog.dismiss();
+                                                AlertDialog.Builder builder3 = new AlertDialog.Builder(MainActivity.this);
+                                                final EditText input = new EditText(MainActivity.this);
+                                                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                                builder3.setView(input)
+                                                        .setTitle("Reset Expenses")
+                                                        .setMessage("Please enter the password: ")
+                                                        .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                //if (Integer.getInteger(input.getText().toString()) == password) {
+                                                                    resetExpenses();
+                                                                //}
+                                                                /*else {
+                                                                    Toast.makeText(getApplicationContext(),
+                                                                            "Incorrect Password" ,
+                                                                            Toast.LENGTH_SHORT).show();
+                                                                }*/
+                                                            }
+                                                        })
+                                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                            }
+                                                        })
+                                                        .show();
                                             }
                                         })
                                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -184,13 +213,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void resetExpenses() {
-        myDatabaseRef.child("Month Archive").child("test").setValue("data");
+        Calendar cal = Calendar.getInstance();
         Map<String, Double> expenseData = new HashMap<String, Double>();
         expenseData.put("Dad", dadAmt);
         expenseData.put("Prev Month", prevMonthAmt);
         expenseData.put("Food", foodAmt);
         expenseData.put("Gas", gasAmt);
         expenseData.put("Misc", miscAmt);
+        expenseData.put("Total", totalAmt);
+        myDatabaseRef.child("Month Archive").child(prevMonthString + " " + cal.get(Calendar.YEAR)).setValue(expenseData);
         totalTextView.setText("$ 0.00");
         dadTextView.setText("Dad $ 0.00");
         prevMonthTextView.setText(prevMonthString + ": $ 0.00");
